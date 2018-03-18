@@ -1,0 +1,11 @@
+# Log files
+Logs/*.log
+
+# Raw data files
+Data/*_raw.dta
+
+# Personal identifiers
+Data/*_pii.dta
+
+# Outreg XML files
+Tables/*.xml
