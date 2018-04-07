@@ -1,8 +1,14 @@
 # Log files
 Logs/*.log
 
+# Do files with PII
+Do/X*.do
+
 # Raw data files
-Data/*_raw.dta
+Data/maximum_diva.dta
+
+# Crosswalk files
+Data/*_crosswalk.dta
 
 # Personal identifiers
 Data/*_pii.dta
