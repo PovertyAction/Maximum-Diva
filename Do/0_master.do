@@ -10,21 +10,12 @@
  macro drop _all
  version 15
 
- * -------------------------- Clear previous output -------------------------- */
-/*
-* Erase previous batch of tables
-local tables : dir "Tables" files "*"
-foreach table in `tables' {
-	erase "Tables/`table'"
-}
+ * -------------------------- Global analysis flags ------------------------- */
 
-* Erase previous batch of figures
-local figures : dir "Figures" files "*"
-foreach figures in `figures' {
-	erase "Figures/`figure'"
-}
-*/
- * -------------------------- Define variable lists -------------------------- */
+* NOTE: RUNNING SIMULATION TAKES AT LEAST 2 HOURS
+global run_balance_simulation = 0 // (0/1) flag to run randomization inference
+
+ * -------------------------- Define variable lists ------------------------- */
 
 /* The following variable lists are defined as a convenience to make the analysis 
    more easily replicated, repeated and/or extended:
