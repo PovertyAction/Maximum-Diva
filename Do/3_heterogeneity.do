@@ -4,7 +4,10 @@
  * project: Maximum Diva Women's Condom    
  * date:    2017-10-20                     
  * ---------------------------------------- *
-
+ * outputs: 
+ *   @Tables/t3_hetero_${subgroup}.xlsx
+ *	 @Tables/t3_hetero_${subgroup}.dta
+ 
 use "../Data/maximum_diva_endline.dta", clear
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
 
@@ -110,6 +113,7 @@ foreach group in $subgroups {
 	preserve
 	use "`tmp'", clear
 	export excel using "../Tables/t3_hetero_`group'.xlsx", replace
+	save "../Tables/t3_hetero_`group'.dta", replace
 	restore
 }
 

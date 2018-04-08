@@ -4,7 +4,9 @@
  * project: Maximum Diva Women's Condom    
  * date:    2017-10-20                     
  * ---------------------------------------- *
-
+ * outputs: 
+ *   @Tables/t2_ITT.xlsx
+ *	 @Tables/t2_ITT.dta
  
 use "../Data/maximum_diva_endline.dta", clear
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
@@ -131,3 +133,4 @@ foreach outcome in $outcomes {
 postclose `pf'
 use "`tmp'", clear
 export excel using "../Tables/t2_ITT.xlsx", replace
+save "../Tables/t2_ITT.dta", replace

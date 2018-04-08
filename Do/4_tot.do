@@ -4,7 +4,9 @@
  * project: Maximum Diva Women's Condom    
  * date:    2017-10-20                     
  * ---------------------------------------- *
-
+ * outputs: 
+ *   @Tables/t4_ToT.xlsx
+ *	 @Tables/t2_ToT.dta
 
 /* TO DO: Change the TOT effect analysis to use IV regressions to handle 
    non compliance in presence of selection bias. */
@@ -138,3 +140,4 @@ foreach outcome in `outcomes' {
 postclose `pf'
 use "`tmp'", clear
 export excel using "../Tables/t4_ToT.xlsx", replace
+save "../Tables/t4_ToT.dta", replace

@@ -4,7 +4,12 @@
  * project: Maximum Diva Women's Condom    
  * date:    2017-10-20                     
  * ---------------------------------------- *
-
+ * outputs: 
+ *   @Tables/t5_robust_diff.xlsx
+ *	 @Tables/t5_robust_diff.dta
+ *   @Tables/t5_robust_or.xlsx
+ *	 @Tables/t5_robust_or.dta
+ 
 use "../Data/maximum_diva_endline.dta", clear
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
 
@@ -44,7 +49,7 @@ program define get_stats, rclass
 		trim("`: display `format' `ci_high''") + ")"
 end
 
-* ----------------------- Check robustness of results ----------------------- */
+* -------------------- Check robustness of results: ATE --------------------- */
 
 * Here we check the robustness of results to different modeling assumptions
 
@@ -97,20 +102,22 @@ postclose `pf'
 preserve
 use "`tmp'", clear
 export excel using "../Tables/t5_robust_diff.xlsx", replace
+save "../Tables/t5_robust_diff.dta", replace
 restore
 
-* ----------------------- Check robustness of results ----------------------- */
+* --------------------- Check robustness of results: OR --------------------- */
 
 tempname pf
 tempfile tmp
-postfile `pf' str60(var or1 or1_ci or2 or2_ci or3 or3_ci or4 or4_ci) using "`tmp'"
+postfile `pf' str60(var or1 or1_ci or2 or2_ci or3 or3_ci) using "`tmp'"
 	
-post `pf' ("") ("Logit, Clustered SEs") ("") ("Logit, Pooled") ("") ("GEE, Binomial") ("") ///
+post `pf' ("") ("Logit, Clustered SEs") ("") ("GEE, Binomial") ("") ///
 	("HLM Logit, Ward Intercepts") ("")
-post `pf' ("Outcome") ("OR") ("95% CI") ("OR") ("95% CI") ("OR") ("95% CI") ///
-	("OR") ("95% CI")
+post `pf' ("Outcome") ("OR") ("95% CI") ("OR") ("95% CI") ("OR") ("95% CI")
 
-foreach outcome in $outcomes {
+local binary_outcomes : list global(outcomes) - global(continuous_covariates)	
+
+foreach outcome in `binary_outcomes' {
 	local is_cont : list outcome in global(continuous_covariates)	
 
 	logit `outcome' $treatment $controls pre_`outcome', cluster(ward)
@@ -118,27 +125,18 @@ foreach outcome in $outcomes {
 	local or1 = "`r(b)'"
 	local or1_ci = "`r(ci)'"
 	
-	preserve
-	local controls = subinstr("${controls}", "i.", "", .)
-	collapse (mean) `outcome' $treatment `controls' pre_`outcome', by(ward)
-	logit `outcome' $treatment `controls' pre_`outcome', robust
+	xtgee `outcome' $treatment $controls pre_`outcome', family(binomial) link(logit)
 	get_stats $treatment "%9.2f" eform
 	local or2 = "`r(b)'"
 	local or2_ci = "`r(ci)'"
-	restore
-	
-	xtgee `outcome' $treatment $controls pre_`outcome', family(binomial) link(logit)
-	get_stats $treatment "%9.2f" eform
-	local or3 = "`r(b)'"
-	local or3_ci = "`r(ci)'"
 		
 	melogit `outcome' $treatment $controls pre_`outcome' || ward:
 	get_stats $treatment "%9.2f" eform
-	local or4 = "`r(b)'"
-	local or4_ci = "`r(ci)'"
+	local or3 = "`r(b)'"
+	local or3_ci = "`r(ci)'"
 	
 	post `pf' ("`: variable label `outcome''") ("`or1'") ("`or1_ci'") ///
-		("`or2'") ("`or2_ci'") ("`or3'") ("`or3_ci'") ("`or4'") ("`or4_ci'")
+		("`or2'") ("`or2_ci'") ("`or3'") ("`or3_ci'")
 }
 
 postclose `pf'
@@ -146,5 +144,6 @@ postclose `pf'
 preserve
 use "`tmp'", clear
 export excel using "../Tables/t5_robust_or.xlsx", replace
+save "../Tables/t5_robust_or.dta", replace
 restore
 

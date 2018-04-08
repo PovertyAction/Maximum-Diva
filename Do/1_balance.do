@@ -4,7 +4,11 @@
  * project: Maximum Diva Women's Condom    
  * date:    2018-03-15                     
  * ---------------------------------------- *
-
+ * outputs: 
+ *   @Tables/t1_balance.xlsx
+ *	 @Tables/t1_balance.dta
+ *	 @Data/maximum_diva_baseline_pooled.dta 
+ 
 use "../Data/maximum_diva_baseline.dta", clear
 
 * --------------------- Check balance of randomization ---------------------- */
@@ -208,6 +212,7 @@ replace reverse_treatment1 = "`ri_F'" in `=`rows' + 2'
 replace pvalue = "`ri_p'" in `=`rows' + 2'
 
 export excel using "../Tables/t1_balance.xlsx", replace
+save "../Tables/t1_balance.dta", replace
 
 restore
 
