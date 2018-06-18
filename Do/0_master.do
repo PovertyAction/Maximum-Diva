@@ -40,8 +40,8 @@ global continuous_covariates ///
 	cont_z_know cont_know_modern mc_z_opinion fc_z_opinion
 
 global outcomes ///
-    mc_use_last mc_z_opinion fc_recognize cont_z_know cont_know_modern ///
-	cont_discussed fc_try fc_z_opinion fc_use_ever fc_use_6mo fc_use_last
+    mc_z_opinion mc_use_last cont_z_know cont_know_modern cont_discussed ///
+	fc_recognize fc_try fc_z_opinion fc_use_ever fc_use_6mo fc_use_last
 	/*pill_use_last iud_use_last inject_use_last implant_use_last /// 
 	diaphragm_use_last modern_use_last*/
 
