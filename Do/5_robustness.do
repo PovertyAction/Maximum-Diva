@@ -12,11 +12,20 @@
  
 use "../Data/maximum_diva_endline.dta", clear
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
+order $outcomes
 
-* ----------------------- Check robustness of results ----------------------- */
+* --------------- Define program for extracting relevant stats -------------- */ 
 
+/* this program extracts and formats coefficient estimates and confidence
+   interval after a regression. the parameters are:
+   
+   @variable - the name of the variable associated with the desired coef
+   @format - the string format for nicely displaying the result
+   @eform - flag to exponentiate the coeff/ci (optional) */
+   
 cap program drop get_stats
 program define get_stats, rclass
+
 	args variable format eform
 	
 	local b = _b[`variable']
@@ -51,7 +60,13 @@ end
 
 * -------------------- Check robustness of results: ATE --------------------- */
 
-* Here we check the robustness of results to different modeling assumptions
+/* Here we check the robustness of ITT results to different modeling 
+   assumptions. Namely, we compare:
+   
+   OLS regression with clustered SEs (original specification)
+   OLS regression with ward-level pooled estimates
+   General Estimating Equations (GEE) 
+   Hierarchical Linear Modeling (HLM) with ward-level intercepts */
 
 xtset ward
 
@@ -105,8 +120,16 @@ export excel using "../Tables/t5_robust_diff.xlsx", replace
 save "../Tables/t5_robust_diff.dta", replace
 restore
 
-* --------------------- Check robustness of results: OR --------------------- */
+* ------------------ Check robustness of results: ATE (OR) ------------------ */
 
+/* Here we check the robustness of ITT results to different modeling 
+   assumptions with the OR as our primary estimate of interest. This time
+   we compare:
+   
+   Logistic regression with clustered SEs (original specification)
+   General Estimating Equations (GEE) with logistic link function
+   Logistic Hierarchical Linear Modeling (HLM) with ward-level intercepts */
+   
 tempname pf
 tempfile tmp
 postfile `pf' str60(var or1 or1_ci or2 or2_ci or3 or3_ci) using "`tmp'"
@@ -147,3 +170,26 @@ export excel using "../Tables/t5_robust_or.xlsx", replace
 save "../Tables/t5_robust_or.dta", replace
 restore
 
+* -------------------- Check robustness of results: CACE -------------------- */
+
+/* Here we check the robustness of CACE results to different modeling 
+   assumptions. Namely, we compare:
+   
+   Propensity score matched (IPW) baseline controls
+   Propensity score matched (IPW) endline controls
+   Propensity score matched (1:M) baseline controls
+   Propensity score matched (1:M) endline controls
+   Per protocol  */
+
+
+ 
+* ------------------ Check robustness of results: CACE (OR) ----------------- */
+
+/* Here we check the robustness of CACE results to different modeling 
+   assumptions. Namely, we compare:
+   
+   Propensity score matched (IPW) baseline controls
+   Propensity score matched (IPW) endline controls
+   Propensity score matched (1:M) baseline controls
+   Propensity score matched (1:M) endline controls
+   Per protocol  */

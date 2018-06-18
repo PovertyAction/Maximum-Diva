@@ -10,6 +10,7 @@
  
 use "../Data/maximum_diva_endline.dta", clear
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
+order $outcomes
 
 * ---------------------- Define programs for formatting --------------------- */
 

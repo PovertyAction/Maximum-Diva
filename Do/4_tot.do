@@ -14,6 +14,7 @@
 use "../Data/maximum_diva_endline.dta", clear
 append using "../Data/maximum_diva_baseline.dta"
 merge m:1 ward using "../Data/maximum_diva_baseline_pooled.dta", nogen assert(3)
+order $outcomes
 
 local balance_vars_cont $continuous_covariates
 
