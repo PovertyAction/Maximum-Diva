@@ -1,4 +1,4 @@
-bl <- read_stata("__data/md_baseline.dta")
+bl <- read_stata("__data/md_baseline.dta",)
 
 bl <- bl %>%
   select(
@@ -16,3 +16,5 @@ bl <- bl %>%
     any_use_last = mc_use_last == 1 | fc_use_last == 1
   ) %>%
   mutate_at(vars(starts_with("any_use")), as.numeric)
+
+bl <- zap_labels(bl)

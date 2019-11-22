@@ -15,6 +15,9 @@ el <- el %>%
   mutate(
     any_use_ever = mc_use_ever == 1 | fc_use_ever == 1,
     any_use_6mo = mc_use_6mo == 1 | fc_use_6mo == 1,
-    any_use_last = mc_use_last == 1 | fc_use_last == 1
+    any_use_last = mc_use_last == 1 | fc_use_last == 1,
+    ward = as.numeric(ward)
   ) %>%
   mutate_at(vars(starts_with("any_use")), as.numeric)
+
+el <- zap_labels(el)
