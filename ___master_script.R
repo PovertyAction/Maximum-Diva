@@ -99,3 +99,4 @@ source("7_robustness_checks/pooled_effects.R")
 
 source("8_manuscript/make_tables.R")
 
+source("8_manuscript/write_tables.R")
