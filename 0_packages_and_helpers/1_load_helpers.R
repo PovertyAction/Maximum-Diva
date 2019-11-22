@@ -1,7 +1,3 @@
-source("0_packages_and_helpers/__lasso_functions.R")
-#source("0_packages_and_helpers/__analysis_functions.R")
-
-
 # Load helper functions ---------------------------------------------------
 
 get_covariates <- function(outcome_name, covariate_frame){
@@ -451,8 +447,3 @@ get_estimate_quick <- function(model, treatment = "Z"){
   coef_mat <- coef(model)
   coef_mat[, treatment_variable]
 }
-
-# source("00_packages_and_helpers/helpers_codebook.R")
-# source("0_packages_and_helpers/__p_value_functions.R")
-# source("00_packages_and_helpers/helpers_plot_functions.R")
-# source("00_packages_and_helpers/helpers_table_functions.R")
