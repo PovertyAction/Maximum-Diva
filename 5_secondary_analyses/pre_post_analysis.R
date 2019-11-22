@@ -19,7 +19,8 @@ nested_pre_post_df <-
   ungroup() %>% 
   gather(outcome, value, outcomes) %>%
   group_by(outcome) %>%
-  nest() 
+  nest() %>%
+  ungroup()
 
 
 # run models --------------------------------------------------------------
