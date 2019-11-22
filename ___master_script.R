@@ -3,10 +3,18 @@ rm(list = ls())
 
 # global parameters -------------------------------------------------------
 
-lasso_sims <- 10
-lasso_folds <- 30
+# number of simulations to run for all randomization inference
+# p-values
+sims <- 10
 
-sims <- 1000
+# set random seed for the simulations
+set.seed(5556514)
+
+# flags for whether to re-run analyses or to load saved results
+rerun_primary_analysis <- TRUE
+rerun_secondary_analysis <- TRUE
+rerun_subgroup_analysis <- TRUE
+rerun_robustness_checks <- TRUE
 
 
 # Packages and helper functions -------------------------------------------
@@ -57,7 +65,7 @@ source("3_covariate_selection/2_select_covariates.R")
 
 source("4_main_analyses/primary_outcomes.R")
 
-# source("4_main_analyses/primary_outcomes_plots.R")
+source("4_main_analyses/primary_outcomes_plots.R")
 
 
 # Secondary analyses ------------------------------------------------------
@@ -75,15 +83,19 @@ source("6_subgroup_analyses/heterogeneous_effects_gender.R")
 
 source("6_subgroup_analyses/heterogeneous_effects_married.R")
 
+source("6_subgroup_analyses/subgroup_plots.R")
+
 
 # Robustness checks -------------------------------------------------------
 
 source("7_robustness_checks/covariate_balance.R")
 
-source("7_robustness_checks/alternative_specifications.R")
+source("7_robustness_checks/pooled_effects.R")
 
-source("7_robustness_checks/pooled_results.R")
+#source("7_robustness_checks/leave_one_out.R")
 
-source("7_robustness_checks/leave_one_out.R")
 
+# Create tables -----------------------------------------------------------
+
+source("8_manuscript/make_tables.R")
 
