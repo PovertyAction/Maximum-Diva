@@ -5,7 +5,7 @@ rm(list = ls())
 
 # number of simulations to run for all randomization inference
 # p-values
-sims <- 10
+sims <- 10000
 
 # set random seed for the simulations
 set.seed(5556514)
