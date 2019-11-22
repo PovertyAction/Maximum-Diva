@@ -63,7 +63,7 @@ pooled_estimates$outcome <- primary_outcomes
 
 pooled_estimates <-
   pooled_estimates %>%
-  gather(variable, value,-outcome) %>%
+  gather(variable, value, -outcome) %>%
   separate(variable, c("variable", "Z"), sep = "_") %>%
   spread(variable, value)
 
@@ -91,12 +91,12 @@ pooled_df <- pooled_df %>%
   )
 
 
-p <- 
+p <-
   ggplot(pooled_estimates,
-       aes(x = factor(Z, labels = c(
-         "Control", "Treatment"
-       )),
-       y = estimate)) +
+         aes(x = factor(Z, labels = c(
+           "Control", "Treatment"
+         )),
+         y = estimate)) +
   geom_jitter(
     aes(
       x = factor(Z, labels = c("Control", "Treatment")),
@@ -104,21 +104,30 @@ p <-
       size = n
     ),
     data = pooled_df,
-    width = 0.2,
-    height = 0.01,
+    width = 0.35,
+    height = 0.001,
     alpha = 0.15,
     stroke = 0
   ) +
   geom_point() +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0) +
-  geom_text(aes(label = specd(estimate, 3)), size = 2.5, nudge_x = 0.15) +
-  facet_grid( ~ fct_relevel(outcome_labels, c("Ever used female condom [0,1]",
-                                              "Used female condom\nin last 6 months [0,1]"))) +
+  geom_text(aes(label = specd(estimate, 3)), size = 2.5, nudge_x = 0.175, family = "Palatino") +
+  facet_grid(~ fct_relevel(
+    outcome_labels,
+    c(
+      "Ever used female condom [0,1]",
+      "Used female condom\nin last 6 months [0,1]"
+    )
+  )) +
   labs(x = "",
        y = "Proportion answering 'Yes'") +
   scale_size_continuous(name = "N per ward") +
   md_theme()
 
-pdf("8_manuscript/figures/primary_outcomes_plot.pdf", width = 8, height = 5)
+pdf(
+  "8_manuscript/figures/primary_outcomes_plot.pdf",
+  width = 8,
+  height = 5
+)
 p %>% print()
 dev.off()
