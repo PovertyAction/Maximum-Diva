@@ -40,3 +40,6 @@ rsconnect/
 
 # local archive
 __archive/
+
+# pii data
+__data/__raw
