@@ -121,6 +121,8 @@ table3 <-
          ipw_effects,
          ipw_ci)
   
+write_rds(table3, "__data/results/table3.rds")
+
 
 # table s2 ----------------------------------------------------------------
 
